@@ -17,6 +17,11 @@ public class WeatherController {
     private GetWeatherResponse getWeatherReport(@PathVariable("id") int id){
         return weatherService.getWeatherReport(id);
     }
+
+    @GetMapping("/weather/state/{state}")
+    private GetWeatherResponse getWeatherReportByState(@PathVariable("state") String state){
+        return weatherService.getWeatherReportByState(state);
+    }
     
     @GetMapping("/weather/")
     private Iterable<GetWeatherResponse> getAllWeatherReport(){

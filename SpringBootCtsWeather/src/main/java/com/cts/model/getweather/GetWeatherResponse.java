@@ -1,18 +1,31 @@
 package com.cts.model.getweather;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.cts.model.City;
+
+import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 public class GetWeatherResponse {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String state;
-    private String city;
-    private String temperature;
-    private String feels;
+
+    //@OneToMany(mappedBy = "getWeatherResponse", cascade = CascadeType.ALL)
+    //@JoinColumn(referencedColumnName="id")
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<CityWeather> cities;
+
+    public List<CityWeather> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<CityWeather> cities) {
+        this.cities = cities;
+    }
 
     public int getId() {
         return id;
@@ -22,24 +35,16 @@ public class GetWeatherResponse {
         this.id = id;
     }
 
-    public String getFeels() {
-        return feels;
-    }
 
-    public void setFeels(String feels) {
-        this.feels = feels;
-    }
 
     public GetWeatherResponse(){
 
     }
 
-    public GetWeatherResponse(int id, String state, String city, String temperature, String feels) {
-        this.id = id;
+    public GetWeatherResponse(String state, CityWeather... cities) {
         this.state = state;
-        this.city = city;
-        this.temperature = temperature;
-        this.feels = feels;
+        this.cities = Stream.of(cities).collect(Collectors.toList());
+        //this.cities.forEach(x -> x.setGetWeatherResponse(this));
     }
 
     public String getState() {
@@ -50,19 +55,5 @@ public class GetWeatherResponse {
         this.state = state;
     }
 
-    public String getCity() {
-        return city;
-    }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(String temperature) {
-        this.temperature = temperature;
-    }
 }
